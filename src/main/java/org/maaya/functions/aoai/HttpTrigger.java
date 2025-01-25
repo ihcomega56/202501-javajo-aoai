@@ -12,7 +12,7 @@ public class HttpTrigger {
      * AOAIから文章を生成するシステム。
      * @param request リクエスト. themeパラメータを含む。
      */
-    @FunctionName("ｘｘｘｘｘ")
+    @FunctionName("paripi")
     public HttpResponseMessage run(
             @com.microsoft.azure.functions.annotation.HttpTrigger(name = "req", methods = {HttpMethod.GET, HttpMethod.POST}, authLevel = AuthorizationLevel.FUNCTION) HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
@@ -20,9 +20,11 @@ public class HttpTrigger {
         context.getLogger().info("生成開始！");
 
         // フリ文章作成
-
+        String theme = request.getQueryParameters().get("theme");
 
         //Azure OpenAI Service を使ってテーマに沿った文章を作成する
+        AoaiCaller aoaiCaller = new AoaiCaller();
+        Response response = new Response(aoaiCaller.createSentence(theme));
 
 
         if (response.text() == null) {
